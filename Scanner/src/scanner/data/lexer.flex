@@ -21,6 +21,6 @@ public String lexeme;
 "return" | "short" | "signed" | "sizeof" | "static" | "struct" | "switch" | "typedef" | "union" |
 "unsigned" | "void" | "volatile" | "while" { lexeme=yytext(); return PALABRA_RESERVADA;}
 {LETRA}({LETRA}|{DIGITO})* {lexeme=yytext(); return IDENTIFICADOR;}
-"-"{0,1}{DIGITO}+"."{0,1}{DIGITO}+ {lexeme=yytext(); return LITERAL;}
+"-"{0,1}{DIGITO}+"."{0,1}{DIGITO}* {lexeme=yytext(); return LITERAL;}
  
 . {return ERROR;}
