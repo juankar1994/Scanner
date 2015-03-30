@@ -82,7 +82,6 @@ public class LexerGUI extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         archivoFileDialog.setMinimumSize(new java.awt.Dimension(623, 397));
-        archivoFileDialog.setPreferredSize(new java.awt.Dimension(623, 397));
 
         archivofileChooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

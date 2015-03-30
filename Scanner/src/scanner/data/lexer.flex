@@ -12,7 +12,7 @@ public String lexeme;
 %}
 %%
 {ESPACIO} {/*Ignore*/}
-"," | ";" | "?" | "||" | "&&" | "(" | ")" | "[" | "]" | "{" | "}" | ":" | "." | 
+"," | ";" | "?" | "||" | "&&" | "(" | ")" | "[" | "]" | "{" | "}" | ":" | "." |
 "++" | "--" | "~" | "#" |
 ( "*" | "+" | "-" | "/" | "!" | "=" | "<" | ">" | "%" | "&" |"^" | "|" | "<<" | ">>" | "-" ){0,1}={0,1} 
 {lexeme=yytext(); return OPERADOR;}
@@ -20,7 +20,7 @@ public String lexeme;
 "else" | "enum" | "extern" | "float" | "for" | "goto" | "if" | "int" | "long" | "register" |
 "return" | "short" | "signed" | "sizeof" | "static" | "struct" | "switch" | "typedef" | "union" |
 "unsigned" | "void" | "volatile" | "while" { lexeme=yytext(); return PALABRA_RESERVADA;}
-"-"{0,1}{DIGITO}+"."{0,1}{DIGITO}* | (""\""{LETRA}*"\""") | ("'{LETRA}'") {lexeme=yytext(); return LITERAL;}
+"-"{0,1}{DIGITO}+"."{0,1}{DIGITO}* | ("\""({LETRA}|{DIGITO}|{ESPACIO})*"\"") | ("'"{LETRA}"'") {lexeme=yytext(); return LITERAL;}
 {LETRA}({LETRA}|{DIGITO})* {lexeme=yytext(); return IDENTIFICADOR;}
  
 . {return ERROR;}
