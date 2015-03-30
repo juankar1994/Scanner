@@ -223,9 +223,15 @@ public class LexerGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Favor seleccionar un archivo C para que este sea analizado.", 
                                                 "Advertencia", JOptionPane.ERROR_MESSAGE);
         }else{
-            archivoController.analizarArchivo();
-            /*JOptionPane.showMessageDialog(null, "El archivo ha sido analizado.", 
-                                                "Advertencia", JOptionPane.INFORMATION_MESSAGE);*/
+            //Analizar el archivo
+            try{
+                String resultado = archivoController.analizarArchivo();
+                JOptionPane.showMessageDialog(null, "El archivo ha sido analizado.\n" + resultado, 
+                                                "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (IOException ex){
+                System.out.println(ex.getMessage());
+            }
         }
     }//GEN-LAST:event_btnAnalizarArchivoActionPerformed
 

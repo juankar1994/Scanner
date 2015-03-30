@@ -8,10 +8,8 @@ public class Scanner {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String path= "C:/Users/JuanCarlos/Documents/GitHub/Scanner/Scanner/src/scanner/data/lexer.flex";
+        String path= "src\\scanner\\data\\lexer.flex";
         generarLexer(path);
-        // TODO code application logic here
-        
     }
     public static void generarLexer(String path){
         File file = new File(path);

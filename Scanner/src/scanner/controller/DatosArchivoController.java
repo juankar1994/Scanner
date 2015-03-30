@@ -1,9 +1,16 @@
 
 package scanner.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import javax.swing.JFileChooser;
 import scanner.data.ArchivoData;
+import scanner.data.Lexer;
+import scanner.data.Token;
 
 public class DatosArchivoController {
     
@@ -21,7 +28,28 @@ public class DatosArchivoController {
         return archivoData.getArchivo();
     }
     
-    public void analizarArchivo(){
+    public String analizarArchivo() throws FileNotFoundException, IOException{
         File archivo = archivoData.getArchivo();
+        
+        Reader reader = new BufferedReader(new FileReader(archivo));
+        Lexer lexer = new Lexer (reader);
+        String resultado="";
+        while (true){
+            Token token =lexer.yylex();
+            if (token == null){
+                resultado = resultado +"EOF";
+                return resultado;
+            }
+            switch (token){
+                case ERROR:
+                    resultado=resultado+ "Error, simbolo no reconocido \n";
+                    break;
+                case OPERADOR: case IDENTIFICADOR: case LITERAL: case PALABRA_RESERVADA:
+                    resultado=resultado + "TOKEN: "+ token+ " " + lexer.lexeme + "\n";
+                    break;
+                default:
+                    resultado=resultado + "TOKEN: "+ token+ "\n";
+            }
+        }
     }
 }
