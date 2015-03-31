@@ -33,5 +33,4 @@ ESPACIO=[ \t\r\n]
 "unsigned" | "void" | "volatile" | "while" { lexeme= lexema(PALABRA_RESERVADA,yytext()); return PALABRA_RESERVADA;}
 "-"{0,1}{DIGITO}+"."{0,1}{DIGITO}* | "\""(\\.|[^"\""])*"\"" | ("'"{LETRA}"'") { lexeme= lexema(LITERAL,yytext()); return LITERAL;}
 {LETRA}({LETRA}|{DIGITO})* {lexeme = lexema(IDENTIFICADOR,yytext()); return IDENTIFICADOR;}
- 
 . {lexeme = lexema(ERROR); return ERROR;}
