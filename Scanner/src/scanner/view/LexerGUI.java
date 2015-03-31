@@ -225,6 +225,7 @@ public class LexerGUI extends javax.swing.JFrame {
             //Analizar el archivo
             try{
                 String resultado = archivoController.analizarArchivo();
+                System.out.println("El archivo ha sido analizado.\n" + resultado);
                 JOptionPane.showMessageDialog(null, "El archivo ha sido analizado.\n" + resultado, 
                                                 "Advertencia", JOptionPane.INFORMATION_MESSAGE);
             }
