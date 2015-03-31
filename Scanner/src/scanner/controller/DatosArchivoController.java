@@ -45,7 +45,7 @@ public class DatosArchivoController {
                     resultado=resultado+ "Error, simbolo no reconocido \n";
                     break;
                 case OPERADOR: case IDENTIFICADOR: case LITERAL: case PALABRA_RESERVADA:
-                    resultado=resultado + "TOKEN: "+ token+ " " + lexer.lexeme + " linea: " + lexer.linea + "\n";
+                    resultado=resultado + "TOKEN: "+ token+ " " + lexer.lexeme.getValue() + " linea: " + lexer.lexeme.getLine() + "\n";
                     break;
                 default:
                     resultado=resultado + "TOKEN: "+ token+ "\n";

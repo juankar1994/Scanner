@@ -320,8 +320,14 @@ public class Lexer {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
-public String lexeme;
-public int linea;
+    private Lexema lexema(Token type) {
+        return new Lexema(type, yyline, yycolumn);
+    }
+    private Lexema lexema(Token type, Object value) {
+        return new Lexema(type, value, yyline, yycolumn);
+    }
+    public String token;
+    public Lexema lexeme;
 
 
   /**
@@ -695,19 +701,19 @@ public int linea;
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { linea= yyline; lexeme=yytext(); return OPERADOR;
+            { lexeme= lexema(OPERADOR,yytext()); return OPERADOR;
             }
           case 7: break;
           case 2: 
-            { return ERROR;
+            { lexeme = lexema(ERROR); return ERROR;
             }
           case 8: break;
           case 3: 
-            { linea= yyline; lexeme=yytext(); return IDENTIFICADOR;
+            { lexeme = lexema(IDENTIFICADOR,yytext()); return IDENTIFICADOR;
             }
           case 9: break;
           case 4: 
-            { linea= yyline;lexeme=yytext(); return LITERAL;
+            { lexeme= lexema(LITERAL,yytext()); return LITERAL;
             }
           case 10: break;
           case 5: 
@@ -715,7 +721,7 @@ public int linea;
             }
           case 11: break;
           case 6: 
-            { linea= yyline;lexeme=yytext(); return PALABRA_RESERVADA;
+            { lexeme= lexema(PALABRA_RESERVADA,yytext()); return PALABRA_RESERVADA;
             }
           case 12: break;
           default:
