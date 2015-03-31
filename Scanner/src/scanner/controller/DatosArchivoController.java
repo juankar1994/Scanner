@@ -37,18 +37,18 @@ public class DatosArchivoController {
         while (true){
             Token token =lexer.yylex();
             if (token == null){
-                resultado = resultado +"EOF";
+                resultado += "EOF";
                 return resultado;
             }
             switch (token){
                 case ERROR:
-                    resultado=resultado+ "Error, simbolo no reconocido \n";
+                    resultado += "Error, simbolo no reconocido \n";
                     break;
                 case OPERADOR: case IDENTIFICADOR: case LITERAL: case PALABRA_RESERVADA:
-                    resultado=resultado + "TOKEN: "+ token+ " " + lexer.lexeme.getValue() + " linea: " + lexer.lexeme.getLine() + "\n";
+                    resultado += "TOKEN: "+ token+ " " + lexer.lexeme.getValue() + " linea: " + lexer.lexeme.getLine() + "\n";
                     break;
                 default:
-                    resultado=resultado + "TOKEN: "+ token+ "\n";
+                    resultado += "TOKEN: "+ token+ "\n";
             }
         }
     }

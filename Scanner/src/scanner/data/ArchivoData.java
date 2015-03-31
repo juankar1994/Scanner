@@ -6,8 +6,7 @@ import java.io.File;
 
 public class ArchivoData {
     File archivo;
-    
-
+  
     public ArchivoData() {
         this.archivo = null;
     }
