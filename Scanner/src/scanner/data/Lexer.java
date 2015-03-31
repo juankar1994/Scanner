@@ -35,12 +35,12 @@ public class Lexer {
   private static final String ZZ_CMAP_PACKED = 
     "\11\0\1\3\1\3\1\50\1\50\1\3\22\0\1\3\1\12\1\46"+
     "\1\4\1\0\1\12\1\6\1\51\1\4\1\4\1\12\1\10\1\4"+
-    "\1\11\1\7\1\12\12\2\1\4\1\4\1\14\1\13\1\15\1\4"+
-    "\1\0\32\1\1\4\1\47\1\4\1\12\1\1\1\0\1\16\1\22"+
-    "\1\26\1\33\1\24\1\34\1\40\1\30\1\32\1\1\1\25\1\35"+
-    "\1\36\1\31\1\21\1\44\1\1\1\23\1\27\1\20\1\17\1\45"+
-    "\1\42\1\37\1\43\1\41\1\4\1\5\1\4\1\4\6\0\1\50"+
-    "\u1fa2\0\1\50\1\50\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
+    "\1\11\1\7\1\12\1\2\11\2\1\4\1\4\1\14\1\13\1\15"+
+    "\1\4\1\0\32\1\1\4\1\47\1\4\1\12\1\1\1\0\1\16"+
+    "\1\22\1\26\1\33\1\24\1\34\1\40\1\30\1\32\1\1\1\25"+
+    "\1\35\1\36\1\31\1\21\1\44\1\1\1\23\1\27\1\20\1\17"+
+    "\1\45\1\42\1\37\1\43\1\41\1\4\1\5\1\4\1\4\6\0"+
+    "\1\50\u1fa2\0\1\50\1\50\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
 
   /** 
    * Translates characters to character classes
@@ -344,7 +344,7 @@ public int linea;
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 180) {
+    while (i < 182) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -587,10 +587,12 @@ public int linea;
         case '\u2028':
         case '\u2029':
           yyline++;
+          yycolumn = 0;
           zzR = false;
           break;
         case '\r':
           yyline++;
+          yycolumn = 0;
           zzR = true;
           break;
         case '\n':
@@ -598,10 +600,12 @@ public int linea;
             zzR = false;
           else {
             yyline++;
+            yycolumn = 0;
           }
           break;
         default:
           zzR = false;
+          yycolumn += zzCharCount;
         }
       }
 
@@ -711,7 +715,7 @@ public int linea;
             }
           case 11: break;
           case 6: 
-            { lexeme=yytext(); return PALABRA_RESERVADA;
+            { linea= yyline;lexeme=yytext(); return PALABRA_RESERVADA;
             }
           case 12: break;
           default:
