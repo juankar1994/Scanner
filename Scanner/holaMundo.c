@@ -1,5 +1,10 @@
 #include <stdio.h>
- 
+// hola esto es un comentario
+/****** esto 
+	**es
+	un **
+	comentario
+	largo ********/
 int main (int argc,char **argv)
 {
    printf("Hola mundo\n");
