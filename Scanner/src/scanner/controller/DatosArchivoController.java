@@ -42,13 +42,10 @@ public class DatosArchivoController {
             }
             switch (token){
                 case ERROR:
-                    resultado += "Error, simbolo no reconocido \n";
-                    break;
-                case OPERADOR: case IDENTIFICADOR: case LITERAL: case PALABRA_RESERVADA:
-                    resultado += "TOKEN: "+ token+ " " + lexer.lexeme.getValue() + " linea: " + lexer.lexeme.getLine() + "\n";
+                    resultado += "Error lexico \n";
                     break;
                 default:
-                    resultado += "TOKEN: "+ token+ "\n";
+                    resultado += "TOKEN: "+ token+ " " + lexer.lexeme.getValue() + " linea: " + lexer.lexeme.getLine() + "\n";
             }
         }
     }
