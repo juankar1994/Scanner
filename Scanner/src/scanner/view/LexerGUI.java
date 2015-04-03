@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -13,11 +14,13 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import scanner.controller.DatosArchivoController;
+import scanner.data.Lexema;
 
 public class LexerGUI extends javax.swing.JFrame {
 
     //Referencia al controlador
     DatosArchivoController archivoController = new DatosArchivoController();
+    JTable tablaTokens, tablaErrores; 
     
     public LexerGUI() {
         initComponents();
@@ -32,11 +35,7 @@ public class LexerGUI extends javax.swing.JFrame {
     }
     
     public void crearTablaTokens(){
-        String columnas[] = {"Token","Tipo","Línea"};
-        //Object[][] datosFila = {{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"}};
-        DefaultTableModel modelo = new DefaultTableModel(null , columnas);
-
-        JTable tablaTokens = new JTable(modelo);
+        tablaTokens = new JTable();
         tablaTokens.setBounds(10, 10, 655, 350);
 
         JScrollPane tablaTokensSP = new JScrollPane(tablaTokens);
@@ -47,16 +46,12 @@ public class LexerGUI extends javax.swing.JFrame {
     }
     
     public void crearTablaErrores(){
-        String columnas[] = {"Error","Línea"};
-        Object[][] datosFila = {{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"},{"ASD", "1", "1,2,3(5)"}};
-        DefaultTableModel modelo = new DefaultTableModel(datosFila , columnas);
+        tablaErrores = new JTable();
+        tablaErrores.setBounds(10, 10, 655, 350);
 
-        JTable tablaTokens = new JTable(modelo);
-        tablaTokens.setBounds(10, 10, 655, 350);
-
-        JScrollPane tablaTokensSP = new JScrollPane(tablaTokens);
+        JScrollPane tablaTokensSP = new JScrollPane(tablaErrores);
         tablaTokensSP.setBounds(10, 10, 655, 350);
-        tablaTokens.setFillsViewportHeight(true);
+        tablaErrores.setFillsViewportHeight(true);
         
         panelErrores.add(tablaTokensSP);
     }
@@ -224,9 +219,22 @@ public class LexerGUI extends javax.swing.JFrame {
         }else{
             //Analizar el archivo
             try{
-                String resultado = archivoController.analizarArchivo();
-                System.out.println("El archivo ha sido analizado.\n" + resultado);
-                JOptionPane.showMessageDialog(null, "El archivo ha sido analizado.\n" + resultado, 
+                ArrayList<Lexema> lexemas = archivoController.analizarArchivo();
+                
+                ArrayList<ArrayList<Lexema>> lexemasDivididos = archivoController.separarTokens(lexemas);
+                
+                Object[][] filaTokensValidos = archivoController.getListaTokensValidos(lexemasDivididos.get(0));
+                Object[][] filaTokensErrores = archivoController.getListaTokensErrores(lexemasDivididos.get(1));
+                
+                String columnas[] = {"Token","Tipo","Línea"};
+                DefaultTableModel modelo = new DefaultTableModel(filaTokensValidos , columnas);
+                tablaTokens.setModel(modelo);
+            
+                String columnas2[] = {"Token", "Línea"};
+                DefaultTableModel modelo2 = new DefaultTableModel(filaTokensErrores , columnas2);
+                tablaErrores.setModel(modelo2);
+                
+                JOptionPane.showMessageDialog(null, "El archivo ha sido analizado.\n", 
                                                 "Advertencia", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (IOException ex){

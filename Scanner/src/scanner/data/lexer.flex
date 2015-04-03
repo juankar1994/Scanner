@@ -31,7 +31,7 @@ NUMERO_ENTERO = 0 | "-"{0,1}{DIGITO}{NUMERO}*
 NUMERO_FlOTANTE = "-"{0,1}(0|({DIGITO}{NUMERO}*))"."{NUMERO}+
 NUMERO_OCTAL = 0({OCTAL})+
 NUMERO_HEXADECIMAL = 0x({HEXADECIMAL})+
-ID = {LETRA}({LETRA}|{DIGITO})* 
+ID = {LETRA}({LETRA}|{DIGITO})*  
 DIRECTIVAS = "#"(define|if|elif|message|undef|ifdef|include|else|endif|error)
 PALABRAS_RESERVADAS = "auto" | "break" | "case" | "char" | "const" | "continue" | "default" | "do" | "double" | 
                       "else" | "enum" | "extern" | "float" | "for" | "goto" | "if" | "int" | "long" | "register" |
@@ -56,4 +56,4 @@ ContenioComentario = ([^*]|\*+[^/*])*
 {NUMERO_OCTAL} { lexeme= lexema(LITERAL_OCTAL,yytext()); return LITERAL_OCTAL;}
 {NUMERO_HEXADECIMAL}  { lexeme= lexema(LITERAL_HEXADECIMAL,yytext()); return LITERAL_HEXADECIMAL;}
 {ID} {lexeme = lexema(IDENTIFICADOR,yytext()); return IDENTIFICADOR;}
-. | 0{NUMERO}* {lexeme = lexema(ERROR); return ERROR;}
+. | 0{NUMERO}* | {DIGITO}({DIGITO}|{LETRA})* {lexeme = lexema(ERROR); return ERROR;}

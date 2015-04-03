@@ -8,7 +8,9 @@
 int main (int argc,char **argv)
 {
    printf("Hola mundo\n");
-   string a = "hola";
+   string hola = "hola";
+   hola = hola + "201";
+   2x = "asd"; 54a = "asd";
    char b = 0x123F4;
    return 0;
 }
