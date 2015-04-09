@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JFileChooser;
 import scanner.data.ArchivoData;
 import scanner.data.Lexema;
@@ -70,26 +73,26 @@ public class DatosArchivoController {
     }
     
     public Object[][] getListaTokensErrores(ArrayList<Lexema> lexemas){
-        Object[][] listaTokensValidos = new Object[lexemas.size()][2];
+        Object[][] listaTokensErrores = new Object[lexemas.size()][2];
         
         ArrayList<Integer> lineas = new ArrayList<>();
-        ArrayList<Integer> duplicados = new ArrayList<>();
         int cont = 0;
+        String lineasFinales = "";
         
         for (int j = 0; j < lexemas.size(); j++)
             lineas.add(lexemas.get(j).getLine());
-            
-        for (int i = 0; i < lexemas.size(); i++) {
-            duplicados.add(lexemas.get(i).getLine());
-            if(isDuplicated(duplicados, lexemas.get(i).getLine()))
-                continue;
-            String lineasFinales = getListaRepetidos(lineas);
-            listaTokensValidos[i] = new Object[] { lexemas.get(i).getType(), lineasFinales};
+        
+        Set<Integer> unique = new HashSet<>(lineas);
+        for (Integer key : unique) {
+            lineasFinales = key.toString();
+            if(Collections.frequency(lineas, key) > 1)
+                lineasFinales += "(" + Collections.frequency(lineas, key) + ")";
+            listaTokensErrores[cont] = new Object[] { lexemas.get(cont).getType(), lineasFinales};
             
             cont++;
         }
-        Object[][] listaErroresFinal = Arrays.copyOf(listaTokensValidos, cont);
-        return listaErroresFinal;
+        Object[][] listaTokensFinal = Arrays.copyOf(listaTokensErrores, cont);
+        return listaTokensFinal;
     }
     
     public Object[][] getListaTokensValidos(ArrayList<Lexema> lexemas){
