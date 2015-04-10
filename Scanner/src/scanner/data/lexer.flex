@@ -14,6 +14,7 @@ import static scanner.data.Token.*;
         return new Lexema(type, value, yyline, yycolumn);
     }
     public String token;
+    public String string;
     public Lexema lexeme;
 %}
 LETRA = [a-zA-Z_]
@@ -23,9 +24,8 @@ OCTAL = [0-8]
 HEXADECIMAL = [0-9a-fA-F]
 FINDELINEA = \r|\n|\r\n
 ESPACIO =[ \t\r\n] | {FINDELINEA} | [ \t\f]
-STRING = "\""(\\.|[^"\""])*"\""
-CARACTER = [^\r\n]
-CARACTER_C = "'"{CARACTER}"'"
+CARACTER = [^\"\r\n]
+CARACTER_C = "'"({CARACTER}|\")"'"
 
 NUMERO_ENTERO = 0 | {DIGITO}{NUMERO}*(u|U)?(l|L)?
 NUMERO_FlOTANTE = (0|({DIGITO}{NUMERO}*))?"."{NUMERO}+(u|U)?(l|L)? | {DIGITO}{NUMERO}*(e|E)"-"?{DIGITO}{NUMERO}*(u|U)?(l|L)?
@@ -44,16 +44,34 @@ ComentarioNormal = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 ComentariodeLinea = "//" {CARACTER}* {FINDELINEA}?
 ComentarioDocumental = "/**" {ContenioComentario} "*"+ "/"
 ContenioComentario = ([^*]|\*+[^/*])*
+%state STRING_STATE, COMENTARIO_STATE
 %%
-{ESPACIO} | {COMENTARIO} {/*Ignorar*/}
-{OPERADORES} { lexeme= lexema(OPERADOR,yytext()); return OPERADOR;}
-{PALABRAS_RESERVADAS} { lexeme= lexema(PALABRA_RESERVADA,yytext()); return PALABRA_RESERVADA;}
-{DIRECTIVAS} { lexeme= lexema(DIRECTIVA,yytext()); return DIRECTIVA;}
-{STRING} { lexeme= lexema(LITERAL_STRING,yytext()); return LITERAL_STRING;}
-{CARACTER_C} { lexeme= lexema(LITERAL_CARACTER,yytext()); return LITERAL_CARACTER;}
-{NUMERO_ENTERO} { lexeme= lexema(LITERAL_ENTERO,yytext()); return LITERAL_ENTERO;}
-{NUMERO_FlOTANTE}  { lexeme= lexema(LITERAL_FLOAT,yytext()); return LITERAL_FLOAT;}
-{NUMERO_OCTAL} { lexeme= lexema(LITERAL_OCTAL,yytext()); return LITERAL_OCTAL;}
-{NUMERO_HEXADECIMAL}  { lexeme= lexema(LITERAL_HEXADECIMAL,yytext()); return LITERAL_HEXADECIMAL;}
-{ID} {lexeme = lexema(IDENTIFICADOR,yytext()); return IDENTIFICADOR;} 
-. | 0{NUMERO}* | {DIGITO}({DIGITO}|{LETRA})*  {lexeme = lexema(ERROR); return ERROR;}
+<YYINITIAL>{
+    {ESPACIO} | {COMENTARIO} {/*Ignorar*/}
+    "/*"        {yybegin(COMENTARIO_STATE);}
+    {OPERADORES} { lexeme= lexema(OPERADOR,yytext()); return OPERADOR;}
+    {PALABRAS_RESERVADAS} { lexeme= lexema(PALABRA_RESERVADA,yytext()); return PALABRA_RESERVADA;}
+    {DIRECTIVAS} { lexeme= lexema(DIRECTIVA,yytext()); return DIRECTIVA;}
+    \" {string = "\""; yybegin(STRING_STATE);}
+    
+    {CARACTER_C} { lexeme= lexema(LITERAL_CARACTER,yytext()); return LITERAL_CARACTER;}
+    {NUMERO_ENTERO} { lexeme= lexema(LITERAL_ENTERO,yytext()); return LITERAL_ENTERO;}
+    {NUMERO_FlOTANTE}  { lexeme= lexema(LITERAL_FLOAT,yytext()); return LITERAL_FLOAT;}
+    {NUMERO_OCTAL} { lexeme= lexema(LITERAL_OCTAL,yytext()); return LITERAL_OCTAL;}
+    {NUMERO_HEXADECIMAL}  { lexeme= lexema(LITERAL_HEXADECIMAL,yytext()); return LITERAL_HEXADECIMAL;}
+    {ID} {lexeme = lexema(IDENTIFICADOR,yytext()); return IDENTIFICADOR;} 
+    . | 0{NUMERO}* | {DIGITO}({DIGITO}|{LETRA})*  {lexeme = lexema(ERROR); return ERROR;}
+}
+<STRING_STATE>{
+    {CARACTER}+  { string = string.concat(yytext());} 
+    \"          { yybegin(YYINITIAL);string = string.concat(yytext());
+                    lexeme = lexema(LITERAL_STRING,string); return LITERAL_STRING;}
+    {FINDELINEA}     { yybegin(YYINITIAL); string.concat(yytext()); 
+                    lexeme = lexema(ERROR,string); return ERROR;}
+    <<EOF>>     { yybegin(YYINITIAL); string.concat(yytext()); 
+                    lexeme = lexema(ERROR,string); return ERROR;}
+}
+<COMENTARIO_STATE>{
+    [^*] {/*Ignorar*/}
+    <<EOF>> { yybegin(YYINITIAL); lexeme = lexema(ERROR,yytext()); return ERROR;}
+}

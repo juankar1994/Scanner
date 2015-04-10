@@ -1,5 +1,9 @@
 #include <stdio.h>
 int main(){
+// Comentario Normal
+/* Comentario de una linea  bien hecho 
+	sigue aca
+*/
    char name[50];
    int marks,i,n;
    printf("Enter number of students: ");
@@ -20,5 +24,6 @@ int main(){
    }
    fclose(fptr);
    return 0;
+   String a = "la casa de la rosa
 /* hola esto es un gran comentario
 }
